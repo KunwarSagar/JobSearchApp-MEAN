@@ -1,0 +1,81 @@
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <a routerLink="/jobs" class="btn btn-secondary btn-xs mb-2">&#8592; Go Back</a>
+            <form [formGroup]="editJobForm" *ngIf="job" (ngSubmit)="editJob()">
+                <div class="card">
+                    <div class="card-header lead">
+                        <h6>Edit position</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">Title</label>
+                                    <input type="text" class="form-control" formControlName="title"
+                                        placeholder="Title" />
+                                    <div class="invalid-feedback" [ngStyle]="{display:required.title?'block':'none'}">
+                                        Please choose a title.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">Salary</label>
+                                    <input type="text" class="form-control" formControlName="salary"
+                                        placeholder="Salary" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">Description</label>
+                                    <textarea type="text" class="form-control" formControlName="description"
+                                        placeholder="Description"></textarea>
+                                    <div class="invalid-feedback"
+                                        [ngStyle]="{display:required.description?'block':'none'}">
+                                        Please write description.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">Experience</label>
+                                    <input type="text" class="form-control" formControlName="experience"
+                                        placeholder="Experience" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">Posted Date</label>
+                                    <input type="text" class="form-control" formControlName="postDate"
+                                        placeholder="mm/dd/yyyy" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">Skills</label>
+                                    <input type="text" class="form-control" formControlName="skills"
+                                        placeholder="Skills comma separated" />
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="" class="label-control">Location</label>
+                                </div>
+                                <div class="input-group">
+                                    <small class="input-group-addon me-1">Latitude</small>
+                                    <input type="text" class="form-control" formControlName="latitude" />
+                                    <small class="input-group-addon mx-1">Longitude</small>
+                                    <input type="text" class="form-control" formControlName="longitude" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary btn-xs float-end">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

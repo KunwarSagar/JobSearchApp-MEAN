@@ -1,0 +1,32 @@
+<div class="container">
+    <div class="row">
+        <div [innerHtml]="message != false ? message:''"></div>
+        <div class="col">
+            <a class="btn btn-success btn-xs mb-2" routerLink="/add-job">&#43; Add Job</a>
+            <div class="card">
+                <div class="card-header bg-white text-center">
+                    <div class="h3 text-dark"><b> {{"Jobs" | uppercase}}</b></div>
+                </div>
+                <div class="card-body bg-light">
+                    <div class="col">
+                        <div class="card mb-4" *ngFor="let job of jobs">
+                            <div class="card-header">
+                                <h5>Job Position: {{job.title}}</h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="h6">
+                                    Salary: &nbsp; {{job.salary | currency}} <br>
+                                    Description: {{job.description}}
+                                </p>
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-xs btn-info float-start" routerLink="/jobs/{{job._id}}">View Details</button>
+                                <button class="btn btn-xs ms-2 btn-danger float-start" (click)="delete(job._id)">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

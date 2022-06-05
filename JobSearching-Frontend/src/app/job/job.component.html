@@ -1,0 +1,29 @@
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <a class="btn btn-secondary btn-xs mb-2" routerLink="/jobs"><b>&#8592; Go Back</b></a>
+            <div class="card">
+                <div class="card-header bg-secondary d-flex">
+                    <h5>Job position: {{job.title}}</h5>
+                </div>
+                <div class="card-body bg-light text-dark">
+                    <p>
+                        <b>Salary</b> &nbsp; {{job.salary | currency}} <br>
+                        <b>Description</b>: {{job.description}} <br>
+                        <b>Location</b>: <br>
+
+                        &nbsp;&nbsp;&nbsp; <b>Latitude</b>: {{job.location.latitude}} <br>
+                        &nbsp;&nbsp;&nbsp; <b>Longitude</b>: {{job.location.longitude}} <br>
+                        <b>Experience</b> {{job.experience}} <br>
+                        <b>Skills</b> : <span *ngFor="let skill of job.skills; let c = index;">{{skill}} {{ (job.skills.length-1) > c ? ", ":"" }}</span><br>
+                        <b>Posted on</b>: &nbsp; {{job.postDate | date:"medium"}} <br>
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-xs btn-info me-1" (click)="edit()">&#9998; Edit Job</button>
+                    <button class="btn btn-xs btn-danger ms-1" (click)="delete()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
