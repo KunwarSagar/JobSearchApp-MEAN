@@ -12,6 +12,10 @@ const getAll = function(req, res){
         offset = parseInt(req.query.offset, process.env.RADIX)
     }
 
+    // if(req.query && req.query.lat && req.query.lng){
+
+    // }
+
     const response = {status: 204, message:{}};
 
     if(isNaN(count) || isNaN(offset)){
@@ -126,8 +130,8 @@ const _partialUpdate =  function(req,res, job){
 
     if(job.location){
         if(req.body.location){
-            job.location.latitude = req.body.location.latitude ? parseFloat(req.body.location.latitude, process.env.RADIX): job.location.latitude;
-            job.location.longitude = req.body.location.longitude ? parseFloat(req.body.location.longitude, process.env.RADIX):job.location.longitude;
+            job.location.address = req.body.location.address ? req.body.location.address : job.location.address;
+            job.location.coordinates = req.body.location.coordinates ? [...req.body.location.coordinates] : job.location.coordinates;
         }
     }
 

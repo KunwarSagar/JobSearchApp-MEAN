@@ -12,8 +12,8 @@
                         <b>Description</b>: {{job.description}} <br>
                         <b>Location</b>: <br>
 
-                        &nbsp;&nbsp;&nbsp; <b>Latitude</b>: {{job.location.latitude}} <br>
-                        &nbsp;&nbsp;&nbsp; <b>Longitude</b>: {{job.location.longitude}} <br>
+                        &nbsp;&nbsp;&nbsp; <b>Address</b>: {{job.location.address}} <br>
+                        &nbsp;&nbsp;&nbsp; <b>Coordinates</b>: {{job.location.coordinates | json}} <br>
                         <b>Experience</b> {{job.experience}} <br>
                         <b>Skills</b> : <span *ngFor="let skill of job.skills; let c = index;">{{skill}} {{ (job.skills.length-1) > c ? ", ":"" }}</span><br>
                         <b>Posted on</b>: &nbsp; {{job.postDate | date:"medium"}} <br>

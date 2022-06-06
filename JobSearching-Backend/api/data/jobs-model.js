@@ -1,8 +1,11 @@
 const mongoose = require("mongoose");
 
 const LocationSchema = new mongoose.Schema({
-    longitude:Number,
-    latitude: Number
+    address : String,
+    coordinates: {
+        type : [Number],
+        index: '2dsphere'
+    }
 });
 const reviewsSchema =  new mongoose.Schema({
     date: Date,

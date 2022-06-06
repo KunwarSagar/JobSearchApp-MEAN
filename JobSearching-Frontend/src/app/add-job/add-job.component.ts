@@ -11,44 +11,53 @@ import { Job } from '../jobs/jobs.component';
 })
 export class AddJobComponent implements OnInit {
 
-  addJobForm!:FormGroup;
+  addJobForm!: FormGroup;
 
-  constructor(private jobService:JobsService, private formBuilder:FormBuilder, private route:ActivatedRoute, private router:Router) { 
+  constructor(private jobService: JobsService, private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router) {
   }
-  
+
   ngOnInit(): void {
     this.addJobForm = this.formBuilder.group({
-      title:"",
-      salary:0,
-      description:"",
-      experience:"",
+      title: "",
+      salary: 0,
+      description: "",
+      experience: "",
       postDate: "",
-      skills:"",
-      latitude:0,
-      longitude:0
-    });    
+      skills: "",
+      address: "",
+      coordinates: ""
+    });
   }
 
-  required:any = {
+  required: any = {
     title: false,
     description: false
   }
 
-  addJob():any{
+  addJob(): any {
     const jobData = this.addJobForm.value;
-      const locaton = {
-        latitude: jobData.latitude,
-        longitude: jobData.longitude
-      }
-      const skills = jobData.skills.split(",");
-      const date = new Date(jobData.postDate);
+    const jobLocation = {
+      address: jobData.address,
+      coordinates: jobData.coordinates.replace(/^\s+|\s+$/gm, "").split(",").map((c: string) => parseFloat(c))
+    }
 
-      let job = new Job("", jobData.title,jobData.salary,locaton,jobData.description,jobData.experience,skills,date);
-      
-      this.jobService.addJob(job).subscribe((addedJob) => {
-        if(addedJob != null){
-          this.router.navigate(["jobs"], {state:{jobAdded:true}})
+    const skills = jobData.skills.split(",").map((s:string) => s.replace(/^\s+|\s+$/gm,'') );
+    const date = new Date(jobData.postDate);
+
+    let job = new Job("", jobData.title, jobData.salary, jobLocation, jobData.description, jobData.experience, skills, date);
+
+    this.jobService.addJob(job).subscribe({
+      next:addedJob => {
+        if(addedJob!= null){
+          this.router.navigate(["jobs"], { state: { jobAdded: true } })
         }
-      });
+      },
+      error:err => {
+        alert("Job add failed");
+      },
+      complete:()=>{
+        // console.log("Job added");
+      }
+    });
   }
 }

@@ -8,8 +8,8 @@ export class Job{
   salary!:number;
   location! : {
     _id:string,
-    latitude:number,
-    longitude:number,
+    address:string,
+    coordinates:[number],
   };
   description!:string;
   experience!:string;
@@ -78,12 +78,18 @@ export class JobsComponent implements OnInit {
   }
 
   delete(jobId:string):any{
-    this.jobsService.deleteJob(jobId).subscribe((res)=>{
-      if(res == null){
+    this.jobsService.deleteJob(jobId).subscribe({
+      next: res => {
+        if (res == null) {
         this.getJobs();
         this.showAlertMessage(environment.ON_DELETE_SUCCESS_MESSAGE, environment.SUCCESS_TYPE);
-      }else{
+        }
+      },
+      error:err => {
         this.showAlertMessage(environment.ON_DELETE_FAILED_MESSAGE, environment.FAILED_TYPE);
+      },
+      complete:()=>{
+        // console.log("Deleted");
       }
     });
   }
