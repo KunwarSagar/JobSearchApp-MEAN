@@ -12,9 +12,12 @@ const getAll = function(req, res){
         offset = parseInt(req.query.offset, process.env.RADIX)
     }
 
-    // if(req.query && req.query.lat && req.query.lng){
-
-    // }
+    // search by skills
+    let searchValue = "";
+    if(req.query && req.query.searchString){
+        searchValue = req.query.searchString;
+    }
+    let query =  searchValue ? {skills:{$elemMatch:{"$in" : [searchValue]}}} : null;
 
     const response = {status: 204, message:{}};
 
@@ -28,12 +31,20 @@ const getAll = function(req, res){
         response.message = {message:"Max count cannot exceed " + max_count};
     }
 
+        
+    if(req.query && req.query.lat && req.query.lng){
+        _runGeoQuery(req, res, count, offset);
+        return;
+    }
+
+
     if(response.status != 204){
         res.status(response.status).json(response.message);
         return;
     }
 
-    Job.find().skip(offset).limit(count).exec().then((jobs) => {
+
+    Job.find( query ).skip(offset).limit(count).exec().then((jobs) => {
         if(jobs == null){
             response.status = 404;
             response.message = {message:"Jobs not found."};
@@ -44,11 +55,45 @@ const getAll = function(req, res){
     }).catch(err =>{
         response.status = 500;
         response.message = {message:"Internal server error"};
+        console.log(err);
     }).finally(()=>{
         res.status(response.status).json(response.message);
     });
 }
 
+const _runGeoQuery = function(req, res, count, offset){
+    let lng = parseFloat(req.query.lng, process.env.RADIX);
+    let lat = parseFloat(req.query.lat, process.env.RADIX);
+
+    const point = {type:"Point", coordinates:[lng, lat]};
+
+    const query = {
+        "location.coordinates":{
+            $near:{
+                $geometry: point,
+                $maxDistance: parseFloat(process.env.GEO_SEARCH_MAX_DISTANCE, process.env.RADIX),
+                $minDistance: parseFloat(process.env.GEO_SEARCH_MIN_DISTANCE, process.env.RADIX)
+            }
+        }
+    }
+
+    const response = {status:204, message:{}};
+    Job.find(query).skip(offset).limit(count).exec()
+        .then(jobs => {
+            if(jobs == null){
+                response.status = 404;
+                response.message = {message: "Jobs not found"};
+            }else{
+                response.status = 200;
+                response.message = {message: jobs}
+            }
+        }).catch(err => {
+            response.status = 500;
+            response.message = "Internal server error";
+        }).finally(()=>{
+            res.status(response.status).json(response.message);
+        });
+}
 
 const getOne = function(req, res){
     const jobId = req.params.jobId;
