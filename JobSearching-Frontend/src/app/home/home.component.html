@@ -1,5 +1,15 @@
 <main class="container mt-5 pt-5">
-    <div class="text-center">
-        <h4>Welcome to Job Search MEAN App.</h4>
+    <div class="row text-center mt-5">
+        <h4>Search for your dream job!</h4>
+        <form #searchForm="ngForm" (ngSubmit)="search()">
+            <div class="col-lg-6 mx-auto mt-4">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search based on skill..." name="searchQuery" ngModel />
+                    <span class="input-group-btn">
+                        <button class="btn btn-info" type="submit">Search</button>
+                    </span>
+                </div>
+            </div>
+        </form>
     </div>
 </main>

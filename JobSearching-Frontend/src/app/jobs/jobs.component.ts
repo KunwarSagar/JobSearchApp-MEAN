@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { JobsService } from '../jobs.service';
 
@@ -41,21 +42,34 @@ export class JobsComponent implements OnInit {
 
   jobs:Job[] = [];
 
-  constructor(private jobsService:JobsService) { }
+  constructor(private jobsService:JobsService, private route:ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.getJobs();
-
+    
     if(history.state.deleted){
       this.showAlertMessage(environment.ON_DELETE_SUCCESS_MESSAGE, environment.SUCCESS_TYPE);
     }
     if(history.state.jobAdded){
       this.showAlertMessage(environment.ON_JOV_ADD_SUCCESS, environment.SUCCESS_TYPE);
     }
+    
+    this.route.queryParams.subscribe(params =>{
+      const queryParams = {
+        searchString : params['searchString'] ? params['searchString'] : "",
+        count : params['count'] ? parseInt(params['count']) : 0,
+        offset : params['offset'] ? parseInt(params['offset']) : 0
+      }
+      if(queryParams.searchString != "" || queryParams.count > 0 || queryParams.offset > 0){
+          this.getJobs(queryParams);
+      }else{
+        this.getJobs();
+      }
+    });
   }
   
-  async getJobs():Promise<Job[]>{
-    await this.jobsService.getJobs().subscribe(jobs => {
+  
+  async getJobs(queryParams = {searchString:"", count:0, offset:0}):Promise<Job[]>{
+    await this.jobsService.getJobs(queryParams).subscribe(jobs => {
       this.jobs = jobs
      });
     return this.jobs;

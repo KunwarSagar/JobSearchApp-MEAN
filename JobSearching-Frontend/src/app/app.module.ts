@@ -46,6 +46,7 @@ import { EditJobComponent } from './edit-job/edit-job.component';
     ]),
     HttpClientModule,
     ReactiveFormsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
